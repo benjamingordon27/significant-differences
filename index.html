@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Significant Differences</title>
+        <p><b>Select your file using the two options and table will appear below with significant differences</b></p>
+        Enter in file path name (EX test.csv)<br>
+        <input type="text" id="input_file"></input>
+        <input type="button" value="File Path" onclick="run_csv_from_path()">
+        <p></p>
+        Choose a file <br>        
+        <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">
+        <p><b>This is the table of percentages and bases being loaded in to be checked with significant differences.</b></p>
+        <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>      
+        <div id="table"></div>        
+        <style>
+            table, th, td {
+              border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>                
+        <script>       
+        var input_file;
+        var input_file_source;
+        var input_csv;   
+        var tr = '<tr>';
+        var tr_end = '</tr>'
+        var th = '<td><b>';
+        var th_end = '</th>';
+        var td = '<td>';
+        var td_end = '</td>';
+        var file;
+
+        function show_csv(body){
+            console.log("Receieved csv:\n" + body);                    
+            var body_update = body.replace(/""/g,'–');
+            var body_update = body_update.replace(/"/g,' ');
+            var body_update = body_update.replace(/]/g,' ');
+            var body_update = body_update.replace(/\[/g,' ');
+            //var body_update = body_update.replace(/ /g,'');
+            var body_update = body_update.replace(/,/g,',');
+            // var body_update = body_update.replace(/\t\t/g, ' ');                
+            //var body_update = body_update.replace('(', '[').replace(')', ']');
+            var split_by_line = body_update.split("\n");
+            split_by_line.shift();
+            input_csv = split_by_line;
+            console.log("input_csv", split_by_line);                
+            var table = '<table style="width:70%">';          
+
+            for(var i =0;i<split_by_line.length;i++){                                     
+                table +=tr;
+                var line = split_by_line[i].split(",");
+                Object.keys(line).map(function(index){
+                    var x = line[index];                        
+                    if(index>0)
+                        x = x.replace(/[A-Z]/g,"");
+                    if(i !=0)
+                        table += td+x+td_end;
+                    else
+                        table += th+x+th_end;                        
+                })
+                table +=tr_end;
+            }
+            document.getElementById("table").innerHTML = table;
+            table = "";  
+            runSigDif();
+        }
+
+        const inputElement = document.getElementById("input_file_source");        
+        //inputElement.addEventListener("change", handleFiles, false);
+        function handleFiles() {
+            const file = document.getElementById('input_file_source').files[0];                                     
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+            var file_to_string =e.target.result;
+            //send the contents of the csv file to the server
+            fetch(`http://localhost:8000/input_file?input=${file_to_string.replace(/\r\n/g,"SPLITHERE")}`)
+            .then(res => res.text())
+            .then(body => show_csv(body));   
+            };
+            reader.readAsText(file);                     
+        }
+
+
+
+        run_csv_from_path = function(){            
+
+            input_file = document.getElementById("input_file").value;
+            console.log("input",input_file);
+
+                     
+            //showCSV = function(){                      
+            fetch(`http://localhost:8000/csv?input=${input_file}`)
+            .then(res => res.text())
+            .then(body => show_csv(body));  
+            }
+
+            var results = "";
+            
+        //const url = 'https://randomuser.me/api/?results=10'; // Get 10 random users
+        runSigDif = function(){                             
+            fetch(`http://localhost:8000/results?input=${results}`)
+            .then(res => res.text())
+            .then(function(body){
+                //console.log("JSON.parse\n" + JSON.parse(body));                    
+                var body_update = body.replace(/""/g,'–');
+                var body_update = body_update.replace(/"/g,' ');
+                var body_update = body_update.replace(/]/g,' ');
+                var body_update = body_update.replace(/\[/g,' ');
+                var body_update = body_update.replace(/ /g,'');
+                var body_update = body_update.replace(/,/g,',');
+                //var body_update = body_update.replace('(', '[').replace(')', ']');
+                var split_by_line = body_update.split("\n");
+
+                var new_array = [];
+                new_array.push(input_csv[0].split(","));
+
+                for(var i=1;i<input_csv.length;i++){
+                    var line = input_csv[i].split(",");
+                    var sig_dif_line = split_by_line[i].split(",");
+                    var output_line = [];
+                    output_line.push(line[0]);
+                    for(var j=1;j<line.length;j++){
+                        var x = line[j];                            
+                        x = x.replace(/[A-Z]/g,"");
+                        if(sig_dif_line[j-1] != "–"){
+                            output_line.push(x + " <b>" + sig_dif_line[j-1]) + "</b>";
+                        }else{
+                            output_line.push(x);
+                        }
+                    }
+                    new_array.push(output_line);
+                }
+                console.log("new_array", new_array)
+                                    
+                table = '<table style="width:70%">';
+
+                for(var i =0;i<new_array.length;i++){                                                                 
+                    table +=tr;
+                    var line = new_array[i];
+                    Object.keys(line).map(function(index){
+                        if(i !=0)
+                            table += td+line[index]+td_end;
+                        else
+                            table += th+line[index]+th_end;
+                    })
+                    table +=tr_end;
+                }
+                table += '</table>';
+                document.getElementById("table").innerHTML = table;                                       
+            });
+        };     
+            
+                                            
+        </script>                         
+        
+    </body>
+</html>
