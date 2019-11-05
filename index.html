@@ -76,6 +76,7 @@
             
             reader.onload = function(e) {
             var file_to_string =e.target.result;
+            console.log("file to string", file_to_string)
             //send the contents of the csv file to the server
             fetch(`http://localhost:8000/input_file?input=${file_to_string.replace(/\r\n/g,"SPLITHERE")}`)
             .then(res => res.text())
