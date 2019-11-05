@@ -237,7 +237,10 @@ app.get("/", function(req,res){
 
 app.use(cors());
 
-app.get("/test", function(req,res){
+app.use("/test", function(req,res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'content-type');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.send("YO yo");
 })
 
