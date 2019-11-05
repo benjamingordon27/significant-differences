@@ -93,7 +93,7 @@
 
                      
             //showCSV = function(){                      
-            fetch(`http://localhost:8000/csv?input=${input_file}`)
+            fetch(`http://localhost:8000/csv?input=${input_file}`,{ mode: 'no-cors' })
             .then(res => res.text())
             .then(body => show_csv(body));  
             }
@@ -102,7 +102,7 @@
             
         //const url = 'https://randomuser.me/api/?results=10'; // Get 10 random users
         runSigDif = function(){                             
-            fetch(`http://localhost:8000/results?input=${results}`)
+            fetch(`http://localhost:8000/results?input=${results}`,{ mode: 'no-cors' })
             .then(res => res.text())
             .then(function(body){
                 //console.log("JSON.parse\n" + JSON.parse(body));                    
