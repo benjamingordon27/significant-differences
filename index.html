@@ -30,6 +30,11 @@
         var td_end = '</td>';
         var file;
 
+        fetch(`http://localhost:8000/test`)            
+            .then(res => res.text())
+            .then(body => console.log(body));               
+        
+
         function show_csv(body){
             console.log("Receieved csv:\n" + body);                    
             var body_update = body.replace(/""/g,'–');

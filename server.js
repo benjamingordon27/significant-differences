@@ -237,6 +237,10 @@ app.get("/", function(req,res){
 
 app.use(cors());
 
+app.get("/test", function(req,res){
+  res.send("YO yo");
+})
+
 app.use("/results", function(req,res){  
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'content-type');
