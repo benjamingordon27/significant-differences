@@ -180,48 +180,6 @@ var curr_letters = [];
 var list_of_output = [];
 var matrix = [];
 
-var express = require('express')
-var app = express();
-
-var port = process.env.PORT || 8000
-
-app.use(express.static(__dirname));
-
-app.get("/", function(req,res){
-    res.sendFile('index.html', { root: __dirname });
-})
-
-app.use("/results", function(req,res){  
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  var string = JSON.stringify(curr_letters);
-  for(var i=0;i<matrix.length;i++){
-      string += "\n" + JSON.stringify(matrix[i]);
-  }
-  res.send(string);
-})
-
-app.use("/csv", function(req,res){     
-  res.setHeader('Access-Control-Allow-Origin', '*');   
-  lines = load_data(req.query.input);
-  res.send(output_csv_to_client(lines));
-})
-
-app.use("/input_file", function(req,res){    
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  //Load in the input, replace spaces and quotes, and split so that we can parse the array.
-  var lines = req.query.input;
-  lines = lines.split("SPLITHERE");  
-  res.send(output_csv_to_client(lines));
-})
-
-
-
-app.listen(port, function(){
-    console.log("app running on local host 8000")
-})
-
-
-
 
 /***
  * Function that takes the csv and outputs it to the client
@@ -260,3 +218,45 @@ let output_csv_to_client = function(lines){
     }
   return (string);
 }
+
+
+
+var express = require('express')
+var app = express();
+
+var port = process.env.PORT || 8000
+
+app.use(express.static(__dirname));
+
+app.get("/", function(req,res){
+    res.sendFile('index.html', { root: __dirname });
+})
+
+let allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Headers', "*");
+  next();
+}
+app.use(allowCrossDomain);
+
+app.get("/results", function(req,res){  
+  //res.setHeader('Access-Control-Allow-Origin', '*');
+  var string = JSON.stringify(curr_letters);
+  for(var i=0;i<matrix.length;i++){
+      string += "\n" + JSON.stringify(matrix[i]);
+  }
+  res.send(string);
+})
+
+app.get("/input_file", function(req,res){    
+  //res.setHeader('Access-Control-Allow-Origin', '*');
+  //Load in the input, replace spaces and quotes, and split so that we can parse the array.
+  var lines = req.query.input;
+  lines = lines.split("SPLITHERE");  
+  res.send(output_csv_to_client(lines));
+})
+
+
+app.listen(port, function(){
+    console.log("app running on local host 8000")
+})
