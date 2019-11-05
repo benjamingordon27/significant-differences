@@ -220,24 +220,21 @@ let output_csv_to_client = function(lines){
 }
 
 
-
+var cors = require('cors')
 var express = require('express')
 var app = express();
 
+
 var port = process.env.PORT || 8000
 
-app.use(express.static(__dirname));
+//app.use(cors());
+
+app.use(cors(),express.static(__dirname));
 
 app.get("/", function(req,res){
     res.sendFile('index.html', { root: __dirname });
 })
 
-let allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', "*");
-  res.header('Access-Control-Allow-Headers', "*");
-  next();
-}
-app.use(allowCrossDomain);
 
 app.get("/results", function(req,res){  
   //res.setHeader('Access-Control-Allow-Origin', '*');
