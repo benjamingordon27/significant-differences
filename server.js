@@ -204,7 +204,7 @@ app.get("/csv", function(req,res){
   res.send(output_csv_to_client(lines));
 })
 
-app.get("/input_file", function(req,res,next){    
+app.use("/input_file", function(req,res,next){    
   res.setHeader('Access-Control-Allow-Origin', '*');
   next()
 },function (req, res, next) {
