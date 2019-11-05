@@ -3,11 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Significant Differences</title>
-        <h3>THERE IS A PROBLEM WITH IF YOU USE 4 SIG DIFS. THE FOURTH COLUMN WONT SHOW DIFS PROPERLY</h3>
-        <p><b>Select your file using the two options and table will appear below with significant differences</b></p>
-        Enter in file path name (EX test.csv)<br>
-        <input type="text" id="input_file"></input>
-        <input type="button" value="File Path" onclick="run_csv_from_path()">
+        <h3>THERE IS A PROBLEM WITH IF YOU USE 4 SIG DIFS. THE FOURTH COLUMN WONT SHOW DIFS PROPERLY</h3>                
         <p></p>
         Choose a file <br>        
         <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">
@@ -86,21 +82,7 @@
             reader.readAsText(file);   
         }
 
-
-
-        run_csv_from_path = function(){            
-
-            input_file = document.getElementById("input_file").value;
-            console.log("input",input_file);
-
-                     
-            //showCSV = function(){                      
-            fetch(`http://localhost:8000/csv?input=${input_file}`)
-            .then(res => res.text())
-            .then(body => show_csv(body));  
-            }
-
-            var results = "";
+        var results = "";
             
         //const url = 'https://randomuser.me/api/?results=10'; // Get 10 random users
         runSigDif = function(){                             
