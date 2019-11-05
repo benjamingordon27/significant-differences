@@ -205,6 +205,7 @@ app.get("/csv", function(req,res){
 })
 
 app.get("/input_file", function(req,res){    
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
   //Load in the input, replace spaces and quotes, and split so that we can parse the array.
   var lines = req.query.input.replace(/%20/g," ");
   lines = lines.replace(/%22/g,'"');  

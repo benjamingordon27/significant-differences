@@ -77,7 +77,7 @@
             reader.onload = function(e) {
             var file_to_string =e.target.result;
             //send the contents of the csv file to the server
-            fetch(`http://localhost:8000/input_file?input=${file_to_string.replace(/\r\n/g,"SPLITHERE")}`,{ mode: 'no-cors' })
+            fetch(`http://localhost:8000/input_file?input=${file_to_string.replace(/\r\n/g,"SPLITHERE")}`)
             .then(res => res.text())
             .then(body => show_csv(body));   
             };
@@ -93,7 +93,7 @@
 
                      
             //showCSV = function(){                      
-            fetch(`http://localhost:8000/csv?input=${input_file}`,{ mode: 'no-cors' })
+            fetch(`http://localhost:8000/csv?input=${input_file}`)
             .then(res => res.text())
             .then(body => show_csv(body));  
             }
@@ -102,7 +102,7 @@
             
         //const url = 'https://randomuser.me/api/?results=10'; // Get 10 random users
         runSigDif = function(){                             
-            fetch(`http://localhost:8000/results?input=${results}`,{ mode: 'no-cors' })
+            fetch(`http://localhost:8000/results?input=${results}`)
             .then(res => res.text())
             .then(function(body){
                 //console.log("JSON.parse\n" + JSON.parse(body));                    
