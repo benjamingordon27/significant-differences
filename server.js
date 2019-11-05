@@ -236,7 +236,7 @@ app.get("/", function(req,res){
 })
 
 
-app.get("/results", function(req,res){  
+app.use("/results", function(req,res){  
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'content-type');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -249,7 +249,7 @@ app.get("/results", function(req,res){
   res.send(string);
 })
 
-app.get("/input_file", function(req,res){  
+app.use("/input_file", function(req,res){  
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'content-type');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
