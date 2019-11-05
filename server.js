@@ -204,10 +204,9 @@ app.get("/csv", function(req,res){
   res.send(output_csv_to_client(lines));
 })
 
-app.use("/input_file", function(req,res,next){    
+app.get("/input_file", function(req,res){    
   res.setHeader('Access-Control-Allow-Origin', '*');
-  next()
-},function (req, res, next) {
+  
   //Load in the input, replace spaces and quotes, and split so that we can parse the array.
   var lines = req.query.input.replace(/%20/g," ");
   lines = lines.replace(/%22/g,'"');  
