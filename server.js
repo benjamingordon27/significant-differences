@@ -192,6 +192,7 @@ app.get("/", function(req,res){
 })
 
 app.get("/results", function(req,res){  
+  res.setHeader('Access-Control-Allow-Origin', '*');
   var string = JSON.stringify(curr_letters);
   for(var i=0;i<matrix.length;i++){
       string += "\n" + JSON.stringify(matrix[i]);
@@ -199,7 +200,8 @@ app.get("/results", function(req,res){
   res.send(string);
 })
 
-app.get("/csv", function(req,res){        
+app.get("/csv", function(req,res){     
+  res.setHeader('Access-Control-Allow-Origin', '*');   
   lines = load_data(req.query.input);
   res.send(output_csv_to_client(lines));
 })
