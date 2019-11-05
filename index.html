@@ -30,11 +30,6 @@
         var td_end = '</td>';
         var file;
 
-        fetch(`http://localhost:8000/test`)            
-            .then(res => res.text())
-            .then(body => console.log(body));               
-        
-
         function show_csv(body){
             console.log("Receieved csv:\n" + body);                    
             var body_update = body.replace(/""/g,'–');
@@ -81,7 +76,7 @@
             file_to_string = file_to_string.replace(/\r\n/g,"SPLITHERE");
             console.log("file to string", file_to_string)
             //send the contents of the csv file to the server
-            fetch(`http://localhost:8000/input_file?input=${encodeURIComponent(file_to_string)}`)            
+            fetch(`https://sig-dif.herokuapp.com/input_file?input=${encodeURIComponent(file_to_string)}`)            
             .then(res => res.text())
             .then(body => show_csv(body));   
             };
@@ -92,7 +87,7 @@
             
         //const url = 'https://randomuser.me/api/?results=10'; // Get 10 random users
         runSigDif = function(){                             
-            fetch(`http://localhost:8000/results?input=${results}`)
+            fetch(`https://sig-dif.herokuapp.com/results?input=${results}`)
             .then(res => res.text())
             .then(function(body){
                 //console.log("JSON.parse\n" + JSON.parse(body));                    
