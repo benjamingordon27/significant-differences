@@ -229,7 +229,12 @@ var port = process.env.PORT || 8000
 
 //app.use(cors());
 
-app.use(cors(),express.static(__dirname));
+app.use(cors(),express.static(__dirname), function(req,res,next){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'content-type');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  next()
+});
 
 app.get("/", function(req,res){
     res.sendFile('index.html', { root: __dirname });
