@@ -229,12 +229,7 @@ var port = process.env.PORT || 8000
 
 //app.use(cors());
 
-app.use(cors(),express.static(__dirname), function(req,res,next){
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'content-type');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  next()
-});
+app.use(cors(),express.static(__dirname));
 
 app.get("/", function(req,res){
     res.sendFile('index.html', { root: __dirname });
@@ -242,7 +237,11 @@ app.get("/", function(req,res){
 
 
 app.get("/results", function(req,res){  
-  //res.setHeader('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'content-type');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+
+
   var string = JSON.stringify(curr_letters);
   for(var i=0;i<matrix.length;i++){
       string += "\n" + JSON.stringify(matrix[i]);
@@ -250,8 +249,12 @@ app.get("/results", function(req,res){
   res.send(string);
 })
 
-app.get("/input_file", function(req,res){    
-  //res.setHeader('Access-Control-Allow-Origin', '*');
+app.get("/input_file", function(req,res){  
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'content-type');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  
+  
   //Load in the input, replace spaces and quotes, and split so that we can parse the array.
   var lines = req.query.input;
   lines = lines.split("SPLITHERE");  
