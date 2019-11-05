@@ -2,6 +2,22 @@
 
 const fs = require('fs');
 
+//
+//
+//
+//
+//
+//
+//
+////THERE IS A PROBLEM WITH IF YOU DO 4 SIG DIFS
+////THE FOURTH COLUMN WILL NOT SHOW SIGNIFICANT DIFFERENCES PROPERLY
+////UGH
+//
+//THERE IS ALSO A PROBLEM WITH & if it's in the csv
+//
+//
+//
+
 /***
  * Function that takes a path and loads in the correct csv file.
  * Returns the data split into lines
@@ -123,6 +139,7 @@ let z_score = function(nums, bases){
 
 //var list_of_output = z_score(nums,bases);
 
+//THE PROBLEM FOR THE FOURTCH COLUMN LIES IN THIS FUNCTION – WHY IS THE MATRIX NOT UPDATING PROPERLY
 let final_output = function(nums,bases,list_of_output){
   //Create an empty matrix
   const matrix = new Array(nums.length).fill("").map(() => new Array(bases.length).fill(""));
@@ -130,6 +147,8 @@ let final_output = function(nums,bases,list_of_output){
     for(var j=0;j<bases.length;j++){
       //curr is the current z score
       var curr = Number(list_of_output[i][j]);
+
+      //THE PROBLEM FOR THE FOURTCH COLUMN LIES IN THIS FUNCTION – WHY IS THE MATRIX NOT UPDATING PROPERLY
 
       //if the z score is above 1.96, then there is a significant difference and we update our table
       if(Math.abs(curr)>1.96){
@@ -213,6 +232,7 @@ let output_csv_to_client = function(lines){
   curr_letters = find_curr_letters(bases, letters);
   list_of_output = z_score(nums,bases);
   matrix = final_output(nums,bases,list_of_output);
+  console.log(matrix);
    
   var string = "";    
   console.log("Running Sig Dif");    
