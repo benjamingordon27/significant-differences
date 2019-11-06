@@ -3,8 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel='icon' href='provokeman.gif' type='image/x-icon'/ >
-        <title>Significant Differences</title>
-        <h3>THERE IS A PROBLEM WITH IF YOU USE 4 SIG DIFS. THE FOURTH COLUMN WONT SHOW DIFS PROPERLY</h3>                
+        <title>Significant Differences</title>                       
         <h4>remember to add screenshots of a csv that is proper, and with instructions</h4>  
         <p></p>
         Choose a file <br>        
@@ -19,7 +18,10 @@
         </style>
     </head>
     <body>                
-        <script>       
+        <script>      
+        //var url = "http://localhost:8000";
+        var url = "https://sig-dif.herokuapp.com";
+        
         var input_file;
         var input_file_source;
         var input_csv;   
@@ -76,8 +78,9 @@
             var file_to_string = e.target.result;
             file_to_string = file_to_string.replace(/\r\n/g,"SPLITHERE");
             console.log("file to string", file_to_string)
-            //send the contents of the csv file to the server
-            fetch(`https://sig-dif.herokuapp.com/input_file?input=${encodeURIComponent(file_to_string)}`)            
+            //send the contents of the csv file to the server            
+            //fetch(`https://sig-dif.herokuapp.com/input_file?input=${encodeURIComponent(file_to_string)}`)            
+            fetch(url+`/input_file?input=${encodeURIComponent(file_to_string)}`)
             .then(res => res.text())
             .then(body => show_csv(body));   
             };
@@ -88,7 +91,7 @@
             
         //const url = 'https://randomuser.me/api/?results=10'; // Get 10 random users
         runSigDif = function(){                             
-            fetch(`https://sig-dif.herokuapp.com/results?input=${results}`)
+            fetch(url+`/results?input=${results}`)
             .then(res => res.text())
             .then(function(body){
                 //console.log("JSON.parse\n" + JSON.parse(body));                    
