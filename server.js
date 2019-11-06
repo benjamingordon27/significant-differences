@@ -9,8 +9,7 @@ const fs = require('fs');
 let load_data = function(path){
   let data = fs.readFileSync(path); //load in the data
   var lines = data.toString().split("\r\n"); //split by line
-  return (lines);
-  
+  return lines;
 }
 
 /***
@@ -57,7 +56,9 @@ let find_nums = function(lines){
           s = "."+s;
         }
         new_line.push(s);
-      }
+      }else{ //if not a percentage, then push NA
+        new_line.push("NA")
+      }      
     });  
     if(new_line.length > 0)
       nums[index] = new_line;
@@ -92,7 +93,7 @@ let find_curr_letters = function(bases,letters){
 }
 
 let z_score = function(nums, bases){
-  var list_of_output = [];  
+  var list_of_output = [];    
     for(var i = 0; i<nums.length;i++){
         var output =[];
         for(var j=0;j<bases.length-1;j++){          
@@ -113,8 +114,6 @@ let z_score = function(nums, bases){
             //var z = (p1 - p2) / (Math.sqrt((p*(1-p))*((1/n1)+(1/n2))));            
             var z = (p1 - p2) / Math.sqrt((p1 * (1 - p1) / (n1 - 1))+(p2 * (1 - p2) / (n2 - 1)));
 
-            
-
             output.push(z);
           }
         }
@@ -126,20 +125,20 @@ let z_score = function(nums, bases){
 
 //var list_of_output = z_score(nums,bases);
 
-let final_output = function(nums,bases,list_of_output){
-  console.log("columns",columns)
+let final_output = function(nums,bases,list_of_output){  
 
   //Create an empty matrix  
   const matrix = new Array(nums.length).fill("").map(() => new Array(bases.length).fill(""));
   
   var line_index = 0;
+  
   for(var i = 0; i<nums.length;i++){    
     line_index = 0;
     for(var j=0;j<bases.length-1;j++){          
       for(var k=j+1;k<bases.length;k++){
-        console.log(line_index);
-        var curr = Number(list_of_output[i][line_index]);
-        console.log("j,k,curr",j,k,curr);
+        
+        var curr = Number(list_of_output[i][line_index]);        
+        
         if(Math.abs(curr)>1.96){
           //x is the first letter being tested, y is the second letter being tested (ex. "A C" means x is A and y is C)                
           var x = columns[line_index].split(" ")[0];          
@@ -178,14 +177,14 @@ var matrix = [];
 let output_csv_to_client = function(lines){
   bases = find_bases(lines);
   nums = find_nums(lines);
-  letters = ["A","B","C","D","E","F"];
+  letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N"];
   columns = letter_combos(bases);
   curr_letters = find_curr_letters(bases, letters);
   list_of_output = z_score(nums,bases);
   matrix = final_output(nums,bases,list_of_output);
-  console.log(matrix);
-   
+  //console.log(matrix);
   var string = "";    
+  //string += "\n" + JSON.stringify(curr_letters);
   console.log("Running Sig Dif");    
   for(var i=0;i<lines.length;i++){      
       if(i==0)
