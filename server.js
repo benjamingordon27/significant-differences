@@ -174,7 +174,12 @@ var matrix = [];
 /***
  * Function that takes the csv and outputs it to the client
  */
-let output_csv_to_client = function(lines){
+let output_csv_to_client = function(lines){  
+  var header ="";
+  if(!lines[1].includes('%')){
+    header = lines.shift();
+  }    
+  
   bases = find_bases(lines);
   nums = find_nums(lines);
   letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N"];
