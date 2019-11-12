@@ -4,24 +4,24 @@
         <meta charset="utf-8">
         <link rel='icon' href='provokeman.gif' type='image/x-icon'/ >
         <title>Significant Differences</title>        
-        <img src="LOGOCLEANSMALL.jpg" alt="Logo" align="right">               
-        <h4>Your input csv should look like this:</h4>
-        <img src="header.jpg" alt="Example Screenshot">
-        <p></p>    
-        <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">
-        <p><b>This is the table of percentages and bases being loaded in, checked with significant differences.</b></p>
-        <!-- <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>       -->
+        <img src="LOGOCLEANSMALL.jpg" alt="Logo" align="right">   
         <div id="table"></div>        
         <style>
             table, th, td {
               border: 1px solid black;
             }
-        </style>
+        </style>            
+        <h4>Your input csv should look like the screenshot below:</h4>
+        <img src="header.jpg" alt="Example Screenshot">
+        <p></p>    
+        <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">
+        <p><b>After choosing a file, your table of percentages will appear at the top of the page, checked with significant differences.</b></p>
+        <!-- <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>       -->        
     </head>
     <body>                
         <script>      
-        //var url = "http://localhost:8000";
-        var url = "https://sig-dif.herokuapp.com";
+        var url = "http://localhost:8000";
+        //var url = "https://sig-dif.herokuapp.com";
         
         var input_file;
         var input_file_source;
