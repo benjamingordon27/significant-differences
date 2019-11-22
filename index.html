@@ -3,19 +3,29 @@
     <head>
         <meta charset="utf-8">
         <link rel='icon' href='provokeman.gif' type='image/x-icon'/ >
-        <title>Significant Differences</title>        
-        <img src="LOGOCLEANSMALL.jpg" alt="Logo" align="right">   
+        <img src="med logo clean.png" alt="Logo" align="right" style="width:25%">   
+        <title>Significant Differences</title>                
+        <h2>Testing Significant Differences Between Proportions at 95% Confidence Level</h2>
+        <p>This tool tests significance between sample proportions. 
+            <a href="http://www.surveystar.com/ztest.htm"><font color="blue">To quote the Datastar website:</font></a></p>
+        <p><i>"Confidence levels computed provide the probability that a difference at least as 
+        large as noted would have occurred by chance if the two population proportions 
+        were in fact equal."</i></p>   
+        <p>Just like the Datastar tool (using a pooled sample approach), we are running 2 proportion Z-tests, by taking sample size and percentages.</p>
+        <p>This tool differs from the Datastar tool, as it allows users to test tables of proportions against each other.</p>
+        <h4>Your input csv should look like the screenshot below:</h4>
+        <img src="header.jpg" alt="Entered In" style="width:50%" align="left">
+        <h4>And your output will look like this screenshot below:</h4>
+        <img src="sigdif_checked.jpg" alt="Output" style="width:50%" align="right">
+        <p><font color="white">_</p>            
+        <p><b><font color="black">After choosing a file, your table of percentages will appear below, checked with significant differences.</b></p>
+        <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()" align="right">         
         <div id="table"></div>        
         <style>
             table, th, td {
               border: 1px solid black;
             }
-        </style>            
-        <h4>Your input csv should look like the screenshot below:</h4>
-        <img src="header.jpg" alt="Example Screenshot">
-        <p></p>    
-        <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">
-        <p><b>After choosing a file, your table of percentages will appear at the top of the page, checked with significant differences.</b></p>
+        </style>       
         <!-- <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>       -->        
     </head>
     <body>                
@@ -39,7 +49,7 @@
             console.log("file_name",file_name);
             console.log("check",file_name == "txt");
             if(file_name == "txt"){
-                document.getElementById("table").innerHTML = "<h5>You did not enter a csv. Try again.</h5>";
+                document.getElementById("table").innerHTML = '<h3><font color="red">You did not enter a csv. Try again.</font></h3>';
                 return;
             }            
             console.log("Receieved csv:\n" + body);                    
@@ -54,8 +64,8 @@
             var split_by_line = body_update.split("\n");
             split_by_line.shift();
             input_csv = split_by_line;
-            console.log("input_csv", split_by_line);                
-            var table = '<table style="width:70%">';          
+            //console.log("input_csv", split_by_line);                
+            //var table = '<table style="width:100%">';          
 
             for(var i =0;i<split_by_line.length;i++){                                     
                 table +=tr;
@@ -96,12 +106,11 @@
         }
 
         var results = "";
-            
-        //const url = 'https://randomuser.me/api/?results=10'; // Get 10 random users
+                    
         runSigDif = function(){                             
             fetch(url+`/results?input=${results}`)
             .then(res => res.text())
-            .then(function(body){
+            .then(function(body){                
                 //console.log("JSON.parse\n" + JSON.parse(body));                    
                 var body_update = body.replace(/""/g,'–');
                 var body_update = body_update.replace(/"/g,' ');
@@ -109,8 +118,9 @@
                 var body_update = body_update.replace(/\[/g,' ');
                 var body_update = body_update.replace(/ /g,'');
                 var body_update = body_update.replace(/,/g,',');
-                //var body_update = body_update.replace('(', '[').replace(')', ']');
+                //var body_update = body_update.replace('(', '[').replace(')', ']');                
                 var split_by_line = body_update.split("\n");
+                //console.log("split_by_line",split_by_line)
 
                 var new_array = [];
                 console.log("columns", input_csv[0].split(",").length);
@@ -118,12 +128,28 @@
                 var curr_letters = []
                 for(var i =0;i<input_csv[0].split(",").length;i++)
                     curr_letters.push(letters[i]); 
+                
+                //push the first line to the new array
+                //new_array.push(input_csv[0].split(","));                
 
-                new_array.push(curr_letters);
-                new_array.push(input_csv[0].split(","));
-
-                for(var i=1;i<input_csv.length;i++){
-                    var line = input_csv[i].split(",");
+                //check for a header. if there is a header, add the letters to the header. if not, the letters are the header
+                var addition = 0;
+                if(!input_csv[1].includes("%")){   
+                    curr_header =  input_csv[0].split(",");
+                    for(var i =1;i<curr_header.length;i++){
+                        curr_header[i] = curr_header[i] + " (" + curr_letters[i] + ")";
+                    }
+                    addition = 1;  
+                    new_array.push(curr_header);                                  
+                    new_array.push(input_csv[1].split(","));                                      
+                }else{                    
+                    new_array.push(curr_letters);
+                    new_array.push(input_csv[0].split(","));
+                }
+                
+                //loop through split by line
+                for(var i=1;i<input_csv.length-1;i++){                    
+                    var line = input_csv[i+addition].split(",");
                     line[0] = unescape(line[0]);
                     var sig_dif_line = split_by_line[i].split(",");
                     var output_line = [];
@@ -139,9 +165,9 @@
                     }
                     new_array.push(output_line);
                 }
-                console.log("new_array", new_array)
+                //console.log("new_array", new_array)
                                     
-                table = '<table style="width:70%">';
+                table = '<table style="width:57%">';
 
                 for(var i =0;i<new_array.length;i++){                                                                 
                     table +=tr;

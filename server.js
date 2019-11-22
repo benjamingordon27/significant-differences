@@ -1,6 +1,8 @@
 'use strict';
 
 const fs = require('fs');
+var header = false;
+var start = 1;  
 
 /***
  * Function that takes a path and loads in the correct csv file.
@@ -8,7 +10,12 @@ const fs = require('fs');
  */
 let load_data = function(path){
   let data = fs.readFileSync(path); //load in the data
-  var lines = data.toString().split("\r\n"); //split by line
+  var lines = data.toString().split("\r\n"); //split by line  
+  if(!lines[1].includes('%')){    
+    header = true;
+  }    
+  //If no header, then start at 1. If header, start at 2.  
+  if(header) start = 2;
   return lines;
 }
 
@@ -16,11 +23,17 @@ let load_data = function(path){
  * Function that finds the bases (the row in lines) given the lines array
  */
 let find_bases = function(lines){
-  var bases = lines[0].split(',');
+  if(!lines[1].includes('%')){    
+    header = true;
+  }    
+  //If no header, then start at 1. If header, start at 2.  
+  if(header) start = 2;
+
+  var bases = lines[start-1].split(',');
   Object.keys(bases).map(function(index){  
     bases[index] = bases[index].replace("n=","");  
   })
-  bases.shift(); //remove the first element
+  bases.shift(); //remove the first element  
   return (bases);
 }
 
@@ -29,13 +42,23 @@ let find_bases = function(lines){
  */
 let find_nums = function(lines){
   var nums = [];
+
+
+  // //Check for a header.
+  // var header = false;
+  // if(!lines[1].includes('%')){    
+  //   header = true;
+  // }    
+  // //If no header, then start at 1. If header, start at 2.  
+  // if(header) start = 2;
+
   //loop through lines and load into nums
-  for(var i=1;i<lines.length;i++){
+  for(var i=start;i<lines.length;i++){    
     var current_line = lines[i].split(",");
     current_line.shift();//remove the first element which is a label
-    nums[i-1] = current_line;
+    nums[i-start] = current_line;
   }
-
+    
   //loop through to replace all numbers and make sure percentages are decimals
   Object.keys(nums).map(function(index){
     var new_line = [];  
@@ -62,7 +85,7 @@ let find_nums = function(lines){
     });  
     if(new_line.length > 0)
       nums[index] = new_line;
-  })
+  })    
   return (nums);
 }
 
@@ -120,6 +143,7 @@ let z_score = function(nums, bases){
         //add the row of output to the current output
         list_of_output.push(output);
       }      
+      //console.log("list_of_output",list_of_output);
       return (list_of_output);
 }
 
@@ -175,9 +199,9 @@ var matrix = [];
  * Function that takes the csv and outputs it to the client
  */
 let output_csv_to_client = function(lines){  
-  var header ="";
+  var header = false;
   if(!lines[1].includes('%')){
-    header = lines.shift();
+    header = true;
   }    
   
   bases = find_bases(lines);
@@ -192,9 +216,9 @@ let output_csv_to_client = function(lines){
   //string += "\n" + JSON.stringify(curr_letters);
   console.log("Running Sig Dif");    
   for(var i=0;i<lines.length;i++){      
-      if(i==0)
-          string += "\n" + JSON.stringify(lines[i]);
-      else{
+    if(i==0 || (i==1 && header)){      
+      string += "\n" + JSON.stringify(lines[i]);
+    }else{
           var curr_line = lines[i].split(",");
           string += "\n";
           Object.keys(curr_line).map(function(index){
@@ -211,6 +235,7 @@ let output_csv_to_client = function(lines){
           })
       }
     }
+  //string = header+string;
   return (string);
 }
 
@@ -242,6 +267,7 @@ app.use("/results", function(req,res){
   for(var i=0;i<matrix.length;i++){
       string += "\n" + JSON.stringify(matrix[i]);
   }
+  //console.log("results string", string)
   res.send(string);
 })
 
@@ -254,6 +280,7 @@ app.use("/input_file", function(req,res){
   //Load in the input, replace spaces and quotes, and split so that we can parse the array.
   var lines = req.query.input;
   lines = lines.split("SPLITHERE");  
+  //console.log("input file", output_csv_to_client(lines))
   res.send(output_csv_to_client(lines));
 })
 
