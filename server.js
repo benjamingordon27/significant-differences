@@ -257,6 +257,7 @@ app.get("/", function(req,res){
 
 app.use(cors());
 
+//get results
 app.use("/results", function(req,res){  
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'content-type');
@@ -271,6 +272,7 @@ app.use("/results", function(req,res){
   res.send(string);
 })
 
+//get input file
 app.use("/input_file", function(req,res){  
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'content-type');
@@ -284,7 +286,15 @@ app.use("/input_file", function(req,res){
   res.send(output_csv_to_client(lines));
 })
 
+//takes the information for the output file and writes it
+app.use("/write_output_file", function(req,res){  
+  fs.writeFile("output_files/"+req.query.input.split("SPLITHERE")[0],req.query.input.split("SPLITHERE")[1], function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+  });
+  //res.send();
+})
 
 app.listen(port, function(){
-    console.log("app running on local host 8000")
+  console.log("app running on local host 8000")
 })

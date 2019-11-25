@@ -4,34 +4,55 @@
         <meta charset="utf-8">
         <link rel='icon' href='provokeman.gif' type='image/x-icon'/ >
         <img src="med logo clean.png" alt="Logo" align="right" style="width:25%">   
-        <title>Significant Differences</title>                
+        <title>Significant Differences</title>   
+        <style>
+          h2  {
+            font-family: "Century Gothic";
+          }
+          h4  {
+            font-family: "Century Gothic";
+          }
+          p  {
+            font-family: "Century Gothic";
+          }
+          table  {
+            font-family: "Century Gothic";
+          }
+          
+        </style>
+    </head>
+    <body> 
         <h2>Testing Significant Differences Between Proportions at 95% Confidence Level</h2>
         <p>This tool tests significance between sample proportions. 
             <a href="http://www.surveystar.com/ztest.htm"><font color="blue">To quote the Datastar website:</font></a></p>
         <p><i>"Confidence levels computed provide the probability that a difference at least as 
         large as noted would have occurred by chance if the two population proportions 
         were in fact equal."</i></p>   
-        <p>Just like the Datastar tool (using a pooled sample approach), we are running 2 proportion Z-tests, by taking sample size and percentages.</p>
-        <p>This tool differs from the Datastar tool, as it allows users to test tables of proportions against each other.</p>
-        <h4>Your input csv should look like the screenshot below:</h4>
+        <p>Just like the Datastar tool (using a pooled sample approach), our tool runs 2 proportion Z-tests, by taking sample size and percentages.</p>
+        <p>However, our tool differs from the Datastar tool, as it allows users to test tables of proportions against each other.</p>
+        <!-- <h4>Your input csv should look like the screenshot below:</h4>
         <img src="header.jpg" alt="Entered In" style="width:50%" align="left">
         <h4>And your output will look like this screenshot below:</h4>
-        <img src="sigdif_checked.jpg" alt="Output" style="width:50%" align="right">
-        <p><font color="white">_</p>            
+        <img src="sigdif_checked.jpg" alt="Output" style="width:50%" align="right"> -->
+        <h4>Your input csv should look like the screenshot below:</h4>
+        <img src="header.jpg" alt="Entered In" style="width:40%">
+        <h4>And your output will look like this screenshot below:</h4>
+        <img src="sig_dif_checked.jpg" alt="Output" style="width:40%">
+        <!-- <p><font color="white">_</p>             -->
         <p><b><font color="black">After choosing a file, your table of percentages will appear below, checked with significant differences.</b></p>
-        <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()" align="right">         
+        <p><b>You can download the csv by clicking the button that will pop up below the table.</b></p>
+        <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">         
         <div id="table"></div>        
         <style>
             table, th, td {
               border: 1px solid black;
             }
-        </style>       
-        <!-- <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>       -->        
-    </head>
-    <body>                
+        </style>    
+        <div id="download_csv"></div>     
+        <!-- <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>       -->                               
         <script>      
-        //var url = "http://localhost:8000";
-        var url = "https://sig-dif.herokuapp.com";
+        var url = "http://localhost:8000";
+        //var url = "https://sig-dif.herokuapp.com";
         
         var input_file;
         var input_file_source;
@@ -44,9 +65,15 @@
         var td_end = '</td>';
         var file;
 
+        var file_name = '';
+
         function show_csv(body){            
-            var file_name = document.getElementById("input_file_source").value.split(".")[1];
-            console.log("file_name",file_name);
+            file_name = document.getElementById("input_file_source").value.split(".")[0];
+            file_name = file_name.replace(/\\/g, "");
+            file_name = file_name.split("fakepath")[1];
+            console.log("file_name",file_name)
+            var file_ext = document.getElementById("input_file_source").value.split(".")[1];
+            console.log("file_ext",file_ext);
             console.log("check",file_name == "txt");
             if(file_name == "txt"){
                 document.getElementById("table").innerHTML = '<h3><font color="red">You did not enter a csv. Try again.</font></h3>';
@@ -103,11 +130,13 @@
             .then(body => show_csv(body));   
             };
             reader.readAsText(file);   
-        }
+        }        
 
         var results = "";
                     
-        runSigDif = function(){                             
+        runSigDif = function(){           
+            var table_csv = "";
+            
             fetch(url+`/results?input=${results}`)
             .then(res => res.text())
             .then(function(body){                
@@ -166,8 +195,8 @@
                     new_array.push(output_line);
                 }
                 //console.log("new_array", new_array)
-                                    
-                table = '<table style="width:57%">';
+                var table_style = '<table style="width:57%">';
+                table = table_style;
 
                 for(var i =0;i<new_array.length;i++){                                                                 
                     table +=tr;
@@ -181,11 +210,38 @@
                     table +=tr_end;
                 }
                 table += '</table>';
-                document.getElementById("table").innerHTML = table;                                       
+                document.getElementById("table").innerHTML = table;      
+                table_csv=table;
+                
+                //now take the table and convert it to format for a csv by replacing all html code appropriately                
+                table_csv = table_csv.replace(/<table style="width:57%">/g,'');                                
+                table_csv = table_csv.replace(/<b>/g, "");
+                table_csv = table_csv.replace(/<td>/g, "");
+                table_csv = table_csv.replace(/<th>/g, "");
+                table_csv = table_csv.replace(/<tr>/g, "");
+                table_csv = table_csv.replace(/<[/]td><[/]tr>/g,"\n");
+                table_csv = table_csv.replace(/<[/]th><[/]tr>/g,"\n");
+                table_csv = table_csv.replace(/<[/]td>/g,",");
+                table_csv = table_csv.replace(/<[/]th>/g,",");
+                table_csv = table_csv.replace(/<[/]table>/g,"");
+                console.log("table\n",table_csv);                
+
+                var output_file_name = file_name+"_significant_differences.csv";
+                //var output_file_name = "test.csv"
+                var send_to_server_table = output_file_name + "SPLITHERE" + table_csv;
+
+                fetch(url+`/write_output_file?input=${encodeURIComponent(send_to_server_table)}`)
+                .then(res => res.text())
+                .then(body => show_csv(body));                   
+                
+                
+                //send the output file name and the contents of the table to the server so it can write the file
+
+                //create the download button so it can download the csv file
+                document.getElementById("download_csv").innerHTML = 
+                '<a href="'+'/output_files/'+output_file_name+'" download><button>Download this table as a csv</button></a>';
             });
-        };     
-            
-                                            
+        };                                        
         </script>                         
         
     </body>
