@@ -3,26 +3,25 @@
     <head>
         <meta charset="utf-8">
         <link rel='icon' href='provokeman.gif' type='image/x-icon'/ >
-        <img src="med logo clean.png" alt="Logo" align="right" style="width:25%">   
+        <img src="med logo clean.png" alt="Logo" align="right" style="width:25%">        
         <title>Significant Differences</title>   
         <style>
           h2  {
-            font-family: "Century Gothic";
+            font-family: "CenturyGothic";
           }
           h4  {
-            font-family: "Century Gothic";
+            font-family: "CenturyGothic";
           }
           p  {
-            font-family: "Century Gothic";
+            font-family: "CenturyGothic";
           }
           table  {
-            font-family: "Century Gothic";
+            font-family: "CenturyGothic";
           }
-          
         </style>
     </head>
     <body> 
-        <h2>Testing Significant Differences Between Proportions at 95% Confidence Level</h2>
+        <h2>Testing Significant Differences Between Proportions at 95% Confidence Level</h2>        
         <p>This tool tests significance between sample proportions. 
             <a href="http://www.surveystar.com/ztest.htm"><font color="blue">To quote the Datastar website:</font></a></p>
         <p><i>"Confidence levels computed provide the probability that a difference at least as 
@@ -35,12 +34,13 @@
         <h4>And your output will look like this screenshot below:</h4>
         <img src="sigdif_checked.jpg" alt="Output" style="width:50%" align="right"> -->
         <h4>Your input csv should look like the screenshot below:</h4>
-        <img src="header.jpg" alt="Entered In" style="width:40%">
+        <img src="header.jpg" alt="Entered In" style="width:46%">
+        <div id="download_template"></div>     
+        <a href="significant_difference_template.csv" download><button>Download this template and fill in your numbers accordingly</button></a>  
         <h4>And your output will look like this screenshot below:</h4>
-        <img src="sig_dif_checked.jpg" alt="Output" style="width:40%">
-        <!-- <p><font color="white">_</p>             -->
-        <p><b><font color="black">After choosing a file, your table of percentages will appear below, checked with significant differences.</b></p>
-        <p><b>You can download the csv by clicking the button that will pop up below the table.</b></p>
+        <img src="sig_dif_checked.jpg" alt="Output" style="width:46%">
+        <!-- <p><font color="white">_</p>             -->        
+        <p><b><font color="black">After choosing a file, your table of percentages will appear below, checked with significant differences.</b></p>        
         <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">         
         <div id="table"></div>        
         <style>
@@ -48,11 +48,11 @@
               border: 1px solid black;
             }
         </style>    
-        <div id="download_csv"></div>     
+        <div id="download_csv"></div>           
         <!-- <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>       -->                               
         <script>      
-        //var url = "http://localhost:8000";
-        var url = "https://sig-dif.herokuapp.com";
+        var url = "http://localhost:8000";
+        //var url = "https://sig-dif.herokuapp.com";
         
         var input_file;
         var input_file_source;
