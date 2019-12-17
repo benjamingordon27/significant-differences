@@ -22,6 +22,39 @@
           table  {
             font-family: "CenturyGothic";
           }
+          button {
+                background-color: #EF611A;
+                border: none;
+                color: #32373B;                
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                display: inline-block;
+                padding: 6px 12px;
+                cursor: pointer;
+                font-family: "CenturyGothic";
+                font-weight: bold;
+            }
+            input[type="file"] {
+                display: none;
+            }
+            .custom-file-upload {                
+                background-color: #EF611A;
+                border: none;
+                color: #32373B; 
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                display: inline-block;
+                padding: 6px 12px;
+                cursor: pointer;
+                font-family: "CenturyGothic";
+                font-weight: bold;
+            }
         </style>
     </head>
     <body> 
@@ -46,6 +79,9 @@
         <img src="sig_dif_checked.jpg" alt="Output" style="width:85%">
         <!-- <p><font color="white">_</p>             -->        
         <p><b><font color="black">After choosing a file, your table of percentages will appear below, checked with significant differences.</b></p>        
+        <label for="input_file_source" class="custom-file-upload">
+                <i class="fa fa-cloud-upload"></i> Custom Upload
+            </label>
         <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">         
         <div id="table"></div>        
         <style>
@@ -63,8 +99,8 @@
         <div id="download_csv"></div>           
         <!-- <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>       -->                               
         <script>      
-        //var url = "http://localhost:8000";
-        var url = "https://sig-dif.herokuapp.com";
+        var url = "http://localhost:8000";
+        //var url = "https://sig-dif.herokuapp.com";
         
         var input_file;
         var input_file_source;
