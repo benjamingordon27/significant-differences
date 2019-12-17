@@ -288,11 +288,11 @@ app.use("/input_file", function(req,res){
 
 //takes the information for the output file and writes it
 app.use("/write_output_file", function(req,res){  
-  fs.writeFile("output_files/"+req.query.input.split("SPLITHERE")[0],req.query.input.split("SPLITHERE")[1], function (err) {
+  fs.writeFileSync("output_files/"+req.query.input.split("SPLITHERE")[0],req.query.input.split("SPLITHERE")[1], function (err) {
     if (err) throw err;
     console.log('Saved!');
   });  
-  //res.send();
+  res.send();
 })
 
 app.listen(port, function(){
