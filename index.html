@@ -196,7 +196,7 @@
                     new_array.push(output_line);
                 }
                 //console.log("new_array", new_array)
-                var table_style = '<table style="width:57%">';
+                var table_style = '<table style="width:200%">';
                 table = table_style;
 
                 for(var i =0;i<new_array.length;i++){                                                                 
@@ -215,7 +215,7 @@
                 table_csv=table;
                 
                 //now take the table and convert it to format for a csv by replacing all html code appropriately                
-                table_csv = table_csv.replace(/<table style="width:57%">/g,'');                                
+                table_csv = table_csv.replace(/<table style="width:200%">/g,'');                                
                 table_csv = table_csv.replace(/<b>/g, "");
                 table_csv = table_csv.replace(/<td>/g, "");
                 table_csv = table_csv.replace(/<th>/g, "");
