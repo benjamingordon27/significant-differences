@@ -292,6 +292,7 @@ app.use("/write_output_file", function(req,res){
     if (err) throw err;
     console.log('Saved!');
   });
+  fs.close();
   //res.send();
 })
 
