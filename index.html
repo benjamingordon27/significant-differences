@@ -82,11 +82,12 @@
         <h4>And your output will look like this screenshot below:</h4>
         <img src="sig_dif_checked.jpg" alt="Output" style="width:85%">
         <!-- <p><font color="white">_</p>             -->        
+        <p><b><font color="black">NOTE: Avoid using commas in your CSV. They may cause an error!</b></p>        
         <p><b><font color="black">After choosing a file, your table of percentages will appear below, checked with significant differences.</b></p>        
         <label for="input_file_source" class="custom-file-upload">
                 <i class="fa fa-cloud-upload"></i> Choose File
             </label>
-        <input type="file" id="input_file_source" accept="text/*" onchange="handleFiles()">         
+        <input type="file" id="input_file_source" accept=".csv" onchange="handleFiles()">         
         <div id="table"></div>        
         <style>
             table, th, td {
@@ -131,8 +132,9 @@
                 document.getElementById("table").innerHTML = '<h3><font color="red">You did not enter a csv. Try again.</font></h3>';
                 return;
             }            
-            console.log("Receieved csv:\n" + body);                    
-            var body_update = body.replace(/""/g,'–');
+            console.log("Receieved csv:\n" + body.replace("NaN%,",''));                                                  
+            var body_update = body.replace(/NaN%,/g,'');
+            var body_update = body_update.replace(/""/g,'–');
             var body_update = body_update.replace(/"/g,' ');
             var body_update = body_update.replace(/]/g,' ');
             var body_update = body_update.replace(/\[/g,' ');
