@@ -79,6 +79,9 @@ let find_nums = function(lines){
           s = "."+s;
         }
         new_line.push(s);
+      }else if(JSON.stringify(nums[index][i]).includes(".")){
+        var s = nums[index][i];
+        new_line.push(s);
       }else{ //if not a percentage, then push NA
         new_line.push("NA")
       }      
