@@ -3,8 +3,8 @@
     <head>
         
         <meta charset="utf-8">
-        <link rel='icon' href='provokeman.gif' type='image/x-icon'/ >
-        <img src="med logo clean.png" alt="Logo" align="right" style="width:25%">        
+        <link rel='icon' href='../images/provokeman.gif' type='image/x-icon'/ >
+        <img src="../images/med logo clean.png" alt="Logo" align="right" style="width:25%">        
         <title>Significant Differences</title>   
         <style>
           h1  {
@@ -76,11 +76,11 @@
         <h4>And your output will look like this screenshot below:</h4>
         <img src="sigdif_checked.jpg" alt="Output" style="width:50%" align="right"> -->
         <h4>Your input csv should look like the screenshot below:</h4>
-        <img src="header.jpg" alt="Entered In" style="width:85%">
+        <img src="../images/header.jpg" alt="Entered In" style="width:85%">
         <div id="download_template"></div>     
-        <a href="significant_difference_template.csv" download><button>Download this template and fill in your numbers accordingly</button></a>  
+        <a href="../assets/significant_difference_template.csv" download><button>Download this template and fill in your numbers accordingly</button></a>  
         <h4>And your output will look like this screenshot below:</h4>
-        <img src="sig_dif_checked.jpg" alt="Output" style="width:85%">
+        <img src="../images/sig_dif_checked.jpg" alt="Output" style="width:85%">
         <!-- <p><font color="white">_</p>             -->        
         <p><b><font color="black">NOTE: Avoid using commas in your CSV. They may cause an error!</b></p>        
         <p><b><font color="black">After choosing a file, your table of percentages will appear below, checked with significant differences.</b></p>        
@@ -104,8 +104,8 @@
         <div id="download_csv"></div>           
         <!-- <input type="button" value="Run Sig Dif" onclick="runSigDif();"></input>       -->                               
         <script>      
-        //var url = "http://localhost:8000";
-        var url = "https://sig-dif.herokuapp.com";
+        var url = "http://localhost:8000";
+        // var url = "https://sig-dif.herokuapp.com";
         
         var input_file;
         var input_file_source;
@@ -230,21 +230,16 @@
                     new_array.push(input_csv[0].split(","));
                 }
                 
-                //loop through split by line
+                //loop through the csv and add it to the table                
                 for(var i=1;i<input_csv.length-1;i++){                    
                     var line = input_csv[i+addition].split(",");
                     line[0] = unescape(line[0]);
-                    var sig_dif_line = split_by_line[i].split(",");
+                    var sig_dif_line = input_csv[i].split(",");
                     var output_line = [];
                     output_line.push(line[0]);
                     for(var j=1;j<line.length;j++){
-                        var x = line[j];                            
-                        x = x.replace(/[A-Z]/g,"");
-                        if(sig_dif_line[j-1] != "–"){
-                            output_line.push(x + " <b>" + sig_dif_line[j-1]) + "</b>";
-                        }else{
-                            output_line.push(x);
-                        }
+                        var x = line[j];
+                        output_line.push(x);
                     }
                     new_array.push(output_line);
                 }

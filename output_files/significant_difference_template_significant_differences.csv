@@ -1,0 +1,7 @@
+ ,Group 1 (A) (A),Group 2 (B) (B),Group 3 (C) (C),Group 4  (D)  (D)
+ Base:,n=100,n=1000,n=400,n=700 
+Attribute 1,50% </b>,70% A</b>,80% AB</b>,90% ABC</b>
+Attribute 2,40% </b>,40% </b>,40% </b>,40% </b>
+Attribute 3,30% BCD</b>,20% CD</b>,10% </b>,10% </b>
+Attribute 4,40% </b>,50% </b>,55% A</b>,60% AB</b>
+Attribute 5,5% </b>,6% </b>,7.7% ABD</b>,8% </b>
